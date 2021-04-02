@@ -12,11 +12,19 @@ int nNodes, nEdges;
 int startNode;
 
 vector<vector<Edge>> edges;
+vector<int>          transitions;
 
+// dfa returns true if word is accepted
 bool dfa( int node, string word, int index )
 {
+    transitions.push_back( node );
+
     if( index == word.size() ) {
-        return true;
+        if( edges[node].size() == 0 ) {
+            return true;
+        }
+
+        return false;
     }
 
     // for (int i = 0; i < size(edges[node]); ++i) {
@@ -61,10 +69,16 @@ void AcceptWords()
     string word;
     cin >> word;
 
-
     /// we check if the word is accepted by DFA
     if( dfa( startNode, word, 0 ) ) {
         cout << "Fine, I accept this word!\n";
+        cout << "The transition is: ";
+        for( int i = 0; i < transitions.size(); ++i ) {
+            cout << transitions[i] << " ";
+        }
+        cout << '\n';
+
+        transitions.clear();  // clear transitions for the next word
     }
     else {
         cout << "Sorry, I can't accept this word...\n";
